@@ -103,7 +103,7 @@ async def handle_chat_message(sid, data):
     await sio.emit('chat message', data, room=sid)
 
 @sio.on('start_countdown')
-async def handle_start_countdown(sid):
+async def handle_start_countdown(sid,data):
     for i in range(900, 0, -1):
         minutes = i // 601
         seconds = i % 60
