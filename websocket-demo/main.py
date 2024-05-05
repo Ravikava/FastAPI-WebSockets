@@ -111,6 +111,30 @@ async def handle_start_countdown(sid,data):
         
         await asyncio.sleep(1)
         
+@sio.on('booking_requests')
+async def booking_requests(sid,data):
+    for i in range(1,11):
+        temp = {
+            'price': 123,
+            'vehicle_type':'SUV',
+            'vehicle_details':{
+                    'vehicle_name' : 'Harrier',
+                    'vehicle_number' : 'GJ01AA1234',
+                    'vehicle_type' : 'SUV',
+                    'vehicle_model' : '',
+                    'vehicle_color' : 'Black',
+                    'vehicle_chesis_no' : 'az123asd1234',
+                    
+                },
+            'vehicle_images' : [],
+            'trip_details' : {
+                'dummy' : 'data'
+            }
+        }
+        await sio.emit('get_booking_requests',temp)
+        
+        await asyncio.sleep(5)
+        
     
         
 if __name__ == "__main__":
