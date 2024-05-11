@@ -113,6 +113,7 @@ async def handle_start_countdown(sid,data):
         
 @sio.on('booking_requests')
 async def booking_requests(sid,data):
+    print(f"\n\n\n booking_requests emited \n\n\n")
     import random
     for i in range(1,11):
         temp = {
@@ -135,6 +136,7 @@ async def booking_requests(sid,data):
         await sio.emit('get_booking_requests',temp)
         
         await asyncio.sleep(5)
+    print(f"\n\n\n get_booking_requests emited \n\n\n")
         
     
         
