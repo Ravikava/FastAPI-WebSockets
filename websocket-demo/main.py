@@ -113,30 +113,39 @@ async def handle_start_countdown(sid,data):
         
 @sio.on('booking_requests')
 async def booking_requests(sid,data):
-    print(f"\n\n\n booking_requests emited \n\n\n")
-    import random
-    for i in range(1,11):
-        temp = {
-            'price': random.randint(99, 9999),
-            'vehicle_type':'SUV',
-            'vehicle_details':{
-                    'vehicle_name' : 'Harrier',
-                    'vehicle_number' : 'GJ01AA1234',
-                    'vehicle_type' : 'SUV',
-                    'vehicle_model' : '',
-                    'vehicle_color' : 'Black',
-                    'vehicle_chesis_no' : 'az123asd1234',
-                    
-                },
-            'vehicle_images' : [],
-            'trip_details' : {
-                'dummy' : 'data'
+    try:
+        print(f"\n\n\n booking_requests emited \n\n\n")
+        import random
+        await asyncio.sleep(15)
+        for i in range(1,11):
+            temp = {
+                'price': random.randint(99, 9999),
+                'vehicle_type':'SUV',
+                'vehicle_details':{
+                        'vehicle_name' : 'Harrier',
+                        'vehicle_number' : 'GJ01AA1234',
+                        'vehicle_type' : 'SUV',
+                        'vehicle_model' : '',
+                        'vehicle_color' : 'Black',
+                        'vehicle_chesis_no' : 'az123asd1234',
+                        
+                    },
+                'vehicle_images' : [
+                        'https://imgd.aeplcdn.com/640X480/cw/ucp/stockApiImg/LZ3RR8V_0db0147e9fb64cb492e3de8d516f0343_1_38782307.jpg?q=80',
+                        'https://imgd.aeplcdn.com/640X480/cw/ucp/stockApiImg/JJA13XY_0db0147e9fb64cb492e3de8d516f0343_1_38782308.jpg?q=80',
+                        'https://imgd.aeplcdn.com/640X480/cw/ucp/stockApiImg/56VZ588_0db0147e9fb64cb492e3de8d516f0343_1_38782310.jpg?q=80',
+                        'https://imgd.aeplcdn.com/640X480/cw/ucp/stockApiImg/BDI9HZ1_0db0147e9fb64cb492e3de8d516f0343_1_38782311.jpg?q=80'
+                    ],
+                'trip_details' : {
+                    'dummy' : 'data'
+                }
             }
-        }
-        await sio.emit('get_booking_requests',temp)
-        
-        await asyncio.sleep(5)
-    print(f"\n\n\n get_booking_requests emited \n\n\n")
+            await sio.emit('get_booking_requests',temp)
+            
+            await asyncio.sleep(random.randint(5, 61))
+        print(f"\n\n\n get_booking_requests emited \n\n\n")
+    except Exception as e:
+        print(f"\n\n\n booking_requests Error : {str(e)} \n\n\n")
         
     
         
