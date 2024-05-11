@@ -113,9 +113,10 @@ async def handle_start_countdown(sid,data):
         
 @sio.on('booking_requests')
 async def booking_requests(sid,data):
+    import random
     for i in range(1,11):
         temp = {
-            'price': 123,
+            'price': random.randint(99, 9999),
             'vehicle_type':'SUV',
             'vehicle_details':{
                     'vehicle_name' : 'Harrier',
