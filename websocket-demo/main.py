@@ -116,7 +116,7 @@ async def booking_requests(sid,data):
     try:
         print(f"\n\n\n booking_requests emited \n\n\n")
         import random
-        await asyncio.sleep(15)
+        await asyncio.sleep(3000)
         for i in range(1,11):
             temp = {
                 'price': random.randint(99, 9999),
