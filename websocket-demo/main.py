@@ -1,8 +1,11 @@
-from fastapi import FastAPI, WebSocket
-from typing import Dict, List
-from asyncio import sleep,create_task
-from fastapi_socketio import SocketManager
-import socketio,asyncio
+from fastapi import FastAPI
+import socketio,logging
+
+logging.basicConfig(
+    filename='socket.log',  # Specify the log file path
+    level=logging.INFO,  # Set the logging level
+    format='%(asctime)s - %(levelname)s - %(message)s'  # Define log message format
+)
 
 app = FastAPI()
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
@@ -14,11 +17,15 @@ customer_sids = {}
 
 @sio.event
 async def connect(sid, environ):
-    print("Profile connected:", sid)
+    try:
+        # print("Profile connected:", sid)
+        logging.info(f"Profile connected: {sid}",exc_info=True)
+    except Exception as e:
+        logging.error(f"connect | Error | {e}",exc_info=True)
 
 @sio.event
 async def disconnect(sid):
-    print("Profile disconnected:", sid)
+    logging.info(f"Profile disconnected: {sid}")
     # Remove from the appropriate dictionary
     if sid in vendor_sids:
         del vendor_sids[sid]
@@ -29,12 +36,12 @@ async def disconnect(sid):
 async def register_vendor(sid, data):
     vendor_id = data.get('vendor_id')
     vendor_sids[vendor_id] = sid
-    print(f"\n\n\n register_vendor on {vendor_sids}")
+    logging.info(f"\n\n\n register_vendor on {vendor_sids}")
     
 @sio.on('register_customer')
 async def register_customer(sid,data):
     customer_sids[sid] = True
-    print(f"\n\n\n register_customer on {customer_sids}")
+    logging.info(f"\n\n\n register_customer on {customer_sids}")
     
 @sio.on('send_booking_request')
 async def booking_request(sid, data):
@@ -43,11 +50,11 @@ async def booking_request(sid, data):
 
 @sio.on('send_booking_quotations')
 async def accept_booking(sid, data):
-    print(f"\n\n\n customer_sid --> {data} \n\n")
-    print(f"\n\n\n accept_booking on {customer_sids}")
+    logging.info(f"\n\n\n customer_sid --> {data} \n\n")
+    logging.info(f"\n\n\n accept_booking on {customer_sids}")
     if data.get('customer_sid') in customer_sids:
         await sio.emit('get_booking_quotations', data, room=data.get('customer_sid'))
-    print(f"\n\n\n Run Stage")
+    logging.info(f"\n\n\n Run Stage")
         
     
 # @sio.on('chat_message')
