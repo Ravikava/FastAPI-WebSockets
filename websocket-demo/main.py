@@ -36,17 +36,17 @@ async def register_customer(sid,data):
     customer_sids[sid] = True
     print(f"\n\n\n register_customer on {customer_sids}")
     
-@sio.on('booking_request')
+@sio.on('send_booking_request')
 async def booking_request(sid, data):
     for vendor_sid in vendor_sids.values():
-        await sio.emit('new_booking_request', data, room=vendor_sid)
+        await sio.emit('get_booking_request', data, room=vendor_sid)
 
-@sio.on('accept_booking')
-async def accept_booking(sid, customer_sid):
-    print(f"\n\n\n customer_sid --> {customer_sid} \n\n")
+@sio.on('send_booking_quotations')
+async def accept_booking(sid, data):
+    print(f"\n\n\n customer_sid --> {data} \n\n")
     print(f"\n\n\n accept_booking on {customer_sids}")
-    if customer_sid in customer_sids:
-        await sio.emit('booking_accepted', 'Your Request Accepted SuccesFully',room=customer_sid)
+    if data.get('customer_sid') in customer_sids:
+        await sio.emit('get_booking_quotations', data, room=data.get('customer_sid'))
     print(f"\n\n\n Run Stage")
         
     
